@@ -1,21 +1,24 @@
 module Servico where
 
-import Cliente
-import Mecanico
+-- import Cliente
+-- import Funcionario
+
+import TypeClasses
+import Data.List.Split
 
 type ServicoID = Int
-type Cliente = Cliente
+type ClientID = Int
 type ModeloVeiculo = String
 type PlacaVeiculo = String
-type Mecanico = Mecanico
+type FuncID = Int
 type Status = String
 
 data Servico = Servico { 
     cod :: ServicoID,
-    clienteID :: ClienteID,
+    clienteID :: ClientID,
     modelo :: ModeloVeiculo,
     placa :: PlacaVeiculo,
-    mecanicoID :: FuncionarioID
+    mecanicoID :: FuncID,
     status :: Status
   }
 
@@ -25,28 +28,28 @@ instance Entity Servico where
 instance Show Servico where
    show (Servico cod clienteID modelo placa mecanicoID status) = "\n-----------------------\n" ++
                                               "ID: " ++ (show cod) ++ "\n" ++
-                                              "ID do Cliente: " ++ clienteID ++ "\n" ++
+                                              "ID do Cliente: " ++ (show clienteID) ++ "\n" ++
                                               "Modelo do veículo: " ++ modelo ++ "\n" ++
                                               "Placa do veículo: " ++ placa ++ "\n" ++
-                                              "ID do mecânico responsável pelo serviço: " ++ mecanicoID ++ "\n" ++
+                                              "ID do mecânico responsável pelo serviço: " ++ (show mecanicoID) ++ "\n" ++
                                               "Status do serviço: " ++ status ++ 
                                               "\n-----------------------\n"
 
 instance Stringfy Servico where
   toString (Servico cod clienteID modelo placa mecanicoID status) = show cod ++ "," ++
-                                                  cliente ++ "," ++
+                                                  show clienteID ++ "," ++
                                                   modelo ++ "," ++
                                                   placa ++ "," ++
-                                                  mecanicoID ++ "," ++
+                                                  show mecanicoID ++ "," ++
                                                   status
 
-instance Read Cliente where
+instance Read Servico where
   readsPrec _ str = do
   let l = splitOn "," str
   let cod = read (l !! 0) :: ServicoID
-  let clienteID = read (l !! 1) :: ClienteID
+  let clienteID = read (l !! 1) :: ClientID
   let modelo = l !! 2
   let placa = l !! 3
-  let mecanicoID = read (l !! 4) :: FuncionarioID
+  let mecanicoID = read (l !! 4) :: FuncID
   let status = l !! 5
-  [(Cliente cod clienteID modelo placa mecanicoID status, "")]
+  [(Servico cod clienteID modelo placa mecanicoID status, "")]

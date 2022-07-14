@@ -4,6 +4,7 @@ import TypeClasses
 
 import System.IO ( hFlush, stdout )
 import System.Process
+import qualified System.Process as SP
 
 import Data.List.Split
 import Data.Char(digitToInt)
@@ -92,6 +93,17 @@ clear = do
 
 input :: String -> IO String
 input text = do
+    putStr text
+    hFlush stdout
+    getLine
+
+clearScreen :: IO ()
+clearScreen = do
+  _ <- SP.system "clear"
+  return ()
+
+getString :: String -> IO String
+getString text = do
     putStr text
     hFlush stdout
     getLine
