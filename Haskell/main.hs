@@ -2,14 +2,65 @@ import Database
 import Utils
 import Chat
 import System.Exit
-import Cliente
+import AdministradorControler
 
 main = do
-    dados <- Database.connect
-    let codAtual = (Database.clienteID dados) + 1
-    let cliente = Cliente codAtual "Teste" "83 999-888"
-    let clientes = Database.clientes dados
-    Database.entityToFile cliente "cliente.txt" "cId.txt"
-    let newDB = dados {Database.clientes = clientes ++ [cliente], Database.clienteID = codAtual}
-    print (newDB)
-    print( Database.clientes newDB)
+    start
+
+start ::IO()
+start = do
+  putStr menu
+    
+  option <- getString "Opção: "
+
+  let opc = read option
+
+  if opc == 1 then do 
+    clearScreen
+    adminInteracao
+  else if opc == 2 then do
+    clearScreen
+    putStr mechanOptions
+    -- opcM <- getLine
+    -- mechanInteracion (read opcM)
+  else if opc == 3 then do
+    clearScreen
+    opcC <- getString "Digite seu id: "
+    clientInteraction (read opcC)
+    
+  else if opc == 4 then do
+    putStr "\nVolte sempre!\n"
+  else
+    putStr "\nOpção Inválida\n"
+
+adminInteracao::IO()
+adminInteracao = do
+
+  clearScreen
+  putStr adminOptions
+  op <- getString "Operaçao: "
+  let opcAdmin = read op
+
+  if opcAdmin == 1 then do
+    -- registerMechanic adminInteracao
+    start
+  else if opcAdmin == 2 then do
+    registrarCliente
+  else if opcAdmin == 3 then do
+    start
+  else if opcAdmin == 4 then do
+    registrarServico
+  else
+    start
+
+clientInteraction::Int -> IO()
+clientInteraction idClient = do
+
+  putStr clientOptions
+  op <- getLine
+  let opcClient = read op
+
+  if opcClient == 1 then do
+    start
+  else
+    start

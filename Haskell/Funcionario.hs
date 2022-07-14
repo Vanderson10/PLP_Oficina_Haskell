@@ -1,5 +1,8 @@
 module Funcionario where
 
+import TypeClasses
+import Data.List.Split
+
 type FuncionarioID = Int
 type Nome = String
 type Funcao = String
@@ -11,7 +14,7 @@ data Funcionario = Funcionario {
     funcao :: Funcao,
     remuneracao :: Salario 
   }
-  deriving (Read, Show)
+  -- deriving (Read, Show)
 
 instance Entity Funcionario where
   entityId funcionario = Funcionario.cod funcionario
@@ -21,14 +24,14 @@ instance Show Funcionario where
                                               "ID: " ++ (show cod) ++ "\n" ++
                                               "Nome: " ++ nome ++ "\n" ++
                                               "Função: " ++ funcao ++ "\n" ++
-                                              "Salário: " ++ remuneracao ++ 
+                                              "Salário: " ++ (show remuneracao) ++ 
                                               "\n-----------------------\n"
 
 instance Stringfy Funcionario where
   toString (Funcionario cod nome funcao remuneracao) = show cod ++ "," ++
                                                   nome ++ "," ++
                                                   funcao ++ "," ++
-                                                  remuneracao 
+                                                  show remuneracao 
 
 instance Read Funcionario where
   readsPrec _ str = do
